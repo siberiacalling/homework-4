@@ -5,5 +5,8 @@ class Steps(object):
     def __init__(self, page: Page):
         self.page = page
 
-    def open(self, url):
+    def open_url(self, url):
         self.page.driver.get(url)
+
+    def open(self):
+        pass

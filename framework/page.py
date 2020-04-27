@@ -8,8 +8,12 @@ class Page(object):
     __timeout = 10
     __frequency = 0.1
 
-    def __init__(self, driver: Remote):
+    def __init__(self, driver: Remote, container: str):
         self.driver = driver
+        self.container = container
+
+    def wait_for_container(self):
+        self.wait_for_visible_by_selector(self.container)
 
     def wait_for_visible_by_selector(self, selector: str):
         self.__wait().until(expect.visibility_of_element_located((By.CSS_SELECTOR, selector)))
