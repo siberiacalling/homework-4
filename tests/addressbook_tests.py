@@ -17,8 +17,8 @@ class AddressBookTests(unittest.TestCase):
     ADDRESSBOOK_URL = 'https://e.mail.ru/addressbook'
     EMAIL_URL = 'https://e.mail.ru/messages/inbox/'
 
-    EMAIL = os.getenv('EMAIL', 'smirnovasiberia')
-    PASSWORD = os.environ['PASSWORD']
+    EMAIL = 'smirnovasiberia'
+    PASSWORD = os.environ.get('PASSWORD')
 
     def setUp(self):
         self.driver = Remote(

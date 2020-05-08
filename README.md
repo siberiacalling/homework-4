@@ -2,13 +2,13 @@
 
 ###Запуск тестов
 
-Необходимо изменить путь к драйверам(убунту или мак) в файле `./node.sh`
+Необходимо изменить путь к драйверам(убунту или мак) в файле
 
-`./grid.sh`
+`./grid.sh` 
 
 `./node.sh`
 
-`python3 run_tests.py`
+`export PASSWORD="1234"` в одном терминале с `python3 run_tests.py`
 
 ###Чек-лист [@siberiacalling](https://github.com/siberiacalling)
 <p>1. Редактирование контакта</p>
