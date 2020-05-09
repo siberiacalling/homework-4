@@ -26,7 +26,7 @@ class AddressBookTests(unittest.TestCase):
             desired_capabilities=getattr(DesiredCapabilities, self.BROWSER_NAME).copy()
         )
 
-        self.driver.implicitly_wait(25)
+        self.driver.implicitly_wait(40)
         self.page = AuthPage(self.MAIL_URL, self.driver)
         self.page.open()
         self.page.get_form_component.authenticate(self.EMAIL, self.PASSWORD)
@@ -34,10 +34,15 @@ class AddressBookTests(unittest.TestCase):
         self.page = EmailPage(self.EMAIL_URL, self.driver)
         self.page.switch_to_address_book()
 
+        window_after = self.driver.window_handles[1]
+        self.driver.switch_to.window(window_after)
         self.page = AddressBookPage(self.ADDRESSBOOK_URL, self.driver)
 
     def tearDown(self):
         self.driver.quit()
 
-    def testEditContact(self):
-        self.page.test_edit_contact()
+    def testEditContactWithoutSelectedContact(self):
+        self.page.edit_contact_two_selected_contact()
+
+    def testEditContactTwoSelectedContact(self):
+        self.page.edit_contact_two_selected_contact()

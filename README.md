@@ -1,6 +1,6 @@
-###Тестирование проекта https://e.mail.ru/addressbook
+### Тестирование проекта https://e.mail.ru/addressbook
 
-###Запуск тестов
+### Запуск тестов
 
 Необходимо изменить путь к драйверам (убунту или мак) в файле `./node.sh`
 #### Команды
@@ -11,7 +11,7 @@
 
 `export PASSWORD="1234"` в одном терминале с `python3 run_tests.py`
 
-###Чек-лист [@siberiacalling](https://github.com/siberiacalling)
+### Чек-лист [@siberiacalling](https://github.com/siberiacalling)
 <p>1. Редактирование контакта</p>
 	<p>&emsp;&emsp;а) Попытка перехода к редактированию из списка контактов</p>
 	<p>&emsp;&emsp;&emsp;&emsp;&bull; при не выбранном ни одном контакте</p>
