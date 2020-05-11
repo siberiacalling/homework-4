@@ -41,6 +41,12 @@ class AddressBookTests(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
+    def testEditContactAddAnotherEmailButtonBelow(self):
+        self.page.test_edit_contact_add_another_email_button_below()
+
+    def testEditContactAddAnotherPhoneButtonBelow(self):
+        self.page.test_edit_contact_add_another_phone_button_below()
+"""
     def testSuccessEditContactList(self):
         self.page.test_edit_contact_list_success()
 
@@ -55,5 +61,16 @@ class AddressBookTests(unittest.TestCase):
     
     def testEditContactDeleteAllInfo(self):
         self.page.test_edit_contact_delete_all_info()
+    
+    def testEditContactWrongEmailCyrillic(self):
+        self.page.test_edit_contact_wrong_email_cyrillic()
+        
+    def testEditContactWrongEmailWithoutAtSign(self):
+        self.page.test_edit_contact_wrong_email_without_at_sign()
+    
+    def testEditContactAddAnotherEmail(self):
+        self.page.test_edit_contact_add_another_email()
 
-
+    def testEditContactAddAnotherPhone(self):
+        self.page.test_edit_contact_add_another_phone()
+"""
