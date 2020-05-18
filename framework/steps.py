@@ -1,8 +1,8 @@
-from framework.page import Page
+from framework.page import BasePage
 
 
-class Steps(object):
-    def __init__(self, page: Page):
+class BaseSteps(object):
+    def __init__(self, page: BasePage):
         self.page = page
 
     def open_url(self, url):

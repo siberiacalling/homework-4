@@ -2,7 +2,7 @@
 
 import unittest
 
-from framework.test import Test
+from tests.group_tests import *
 
 
 if __name__ == '__main__':

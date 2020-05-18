@@ -6,7 +6,7 @@ from selenium.webdriver import Remote
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-class Test(TestCase):
+class BaseTest(TestCase):
     driver: Remote
 
     def setUp(self):
