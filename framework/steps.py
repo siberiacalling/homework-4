@@ -2,6 +2,8 @@ from framework.page import BasePage
 
 
 class BaseSteps(object):
+    page: BasePage
+
     def __init__(self, page: BasePage):
         self.page = page
 

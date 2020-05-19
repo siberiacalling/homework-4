@@ -2,7 +2,7 @@
 
 import unittest
 
-from tests.group_tests import *
+from tests.auth_test import *
 
 
 if __name__ == '__main__':
