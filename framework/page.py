@@ -14,6 +14,9 @@ class BasePage(object):
     def wait_for_visible(self, by, value) -> WebElement:
         return self.__wait().until(EC.presence_of_element_located((by, value)))
 
+    def wait_for_invisible(self, by, value):
+        self.__wait().until(EC.invisibility_of_element_located((by, value)))
+
     def wait_for_clickable(self, by, value) -> WebElement:
         return self.__wait().until(EC.element_to_be_clickable((by, value)))
 
