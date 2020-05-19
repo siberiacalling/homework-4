@@ -10,7 +10,7 @@ class AuthSteps(BaseSteps):
         super().__init__(AuthPage(driver))
 
     def auth(self):
-        self.open_url('https://mail.ru/')
+        self.open_url('https://e.mail.ru/login?page=https%3a%2f%2fe.mail.ru%2faddressbook')
         self.wait_for_form()
         self.login(login=os.environ.get('LOGIN'), password=os.environ.get('PASSWORD'))
 
