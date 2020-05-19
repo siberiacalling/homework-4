@@ -20,6 +20,11 @@ class AddressBookSteps(BaseSteps):
         popup.confirm()
         popup.check_error()
 
+    def create_group_by_dropdown(self, group_name: str):
+        popup = self.page.open_ingroup_dropdown()
+        popup.fill_group_name_form(group_name)
+        popup.confirm_create_group()
+
     def delete_group(self, group_name: str):
         popup = self.page.open_edit_group_popup(group_name)
         popup.delete()
