@@ -15,7 +15,7 @@ class AddressBookPage(BasePage):
         INGROUP_DROPDOWN_LINK = (By.XPATH, '//span[.="В группу"][@class="b-dropdown__ctrl__text"]')
 
         @staticmethod
-        def edit_group_link_container(name: str):
+        def group_container(name: str):
             return (By.XPATH, f'//span[.="{name}"][@class="menu__item__link__text menu__item__link__text_linear"]/parent::*')
 
     def open_create_group_popup(self) -> CreateGroupPopup:
@@ -25,7 +25,7 @@ class AddressBookPage(BasePage):
         return popup
 
     def open_edit_group_popup(self, group_name: str) -> EditGroupPopup:
-        group_container = self.wait_for_visible(*self.Locators.edit_group_link_container(group_name))
+        group_container = self.wait_for_visible(*self.Locators.group_container(group_name))
         edit_icon = group_container.find_element(*self.Locators.EDIT_GROUP_ICON)
 
         ActionChains(self.driver).move_to_element(edit_icon).click(edit_icon).perform()

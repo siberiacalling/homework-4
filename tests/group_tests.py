@@ -7,8 +7,7 @@ class CreateGroupTest(BaseTest):
     UNIQUE_GROUP_NAME = 'new-group-is-unique'
     EXISTING_GROUP_NAME = 'existing-group-name'
 
-    def setUp(self):
-        super().setUp()
+    def before_each(self):
         AuthSteps(self.driver).auth()
 
     def test_successful_create_group_by_link(self):

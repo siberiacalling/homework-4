@@ -19,5 +19,19 @@ class BaseTest(TestCase):
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
 
+        try:
+            self.before_each()
+        except:
+            self.tearDown()
+
+    def before_each(self):
+        pass
+
+    def after_each(self):
+        pass
+
     def tearDown(self):
-        self.driver.quit()
+        try:
+            self.after_each()
+        finally:
+            self.driver.quit()
