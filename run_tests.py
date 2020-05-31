@@ -3,7 +3,7 @@
 import unittest
 
 from tests.group_tests import *
-
+from tests.edit_contact_tests import *
 
 if __name__ == '__main__':
     unittest.main()

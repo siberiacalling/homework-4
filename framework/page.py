@@ -10,6 +10,7 @@ class BasePage(object):
 
     def __init__(self, driver: Remote):
         self.driver = driver
+        self.driver.implicitly_wait(10)
 
     def wait_for_visible(self, by, value) -> WebElement:
         return self.__wait().until(EC.presence_of_element_located((by, value)))
@@ -23,5 +24,9 @@ class BasePage(object):
     def wait_for_url(self, url: str):
         self.__wait().until(lambda driver: driver.current_url == url)
 
+    def wait_for_all_elements(self, by, value):
+        return WebDriverWait(self.driver, 150).until(
+            EC.presence_of_all_elements_located((by, value)))
+    
     def __wait(self) -> WebDriverWait:
         return WebDriverWait(self.driver, self.__timeout, self.__frequency)

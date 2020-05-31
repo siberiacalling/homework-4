@@ -29,3 +29,30 @@ class AddressBookSteps(BaseSteps):
         popup = self.page.open_edit_group_popup(group_name)
         popup.delete()
         popup.check_disappear()
+
+    def check_first_checkbox(self):
+        self.page.check_first_checkbox()
+
+    def check_second_checkbox(self):
+        self.page.check_second_checkbox()
+
+    def click_edit_button(self):
+        self.page.click_edit_button()
+
+    def create_test_contact(self, firstname, lastname, company, email, phone):
+        self.page.click_add_button()
+        self.page.fill_contact(firstname, lastname, company, email, phone)
+        self.page.click_submit_button()
+
+    def change_firstname_field(self, new_firstname):
+        self.page.change_firstname(new_firstname)
+        self.page.click_submit_button()
+
+    def check_edited_field(self, new_firstname, lastname):
+        xpath = '//*[contains(text(), \'' + lastname + " " + new_firstname  + '\')]'
+        return self.page.check_element_exists_by_xpath(xpath)
+
+    def delete_tested_contact(self):
+        self.page.click_remove_button()
+        self.page.confirm_remove()
+
