@@ -1,5 +1,5 @@
 from framework.steps import BaseSteps
-from pages.address_book_page import AddressBookPage
+from pages.address_book_page.page import AddressBookPage
 
 
 class AddressBookSteps(BaseSteps):

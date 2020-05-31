@@ -23,3 +23,4 @@ class AuthSteps(BaseSteps):
         self.page.fill_password_form(password)
         self.page.submit()
         self.page.wait_for_logged_in(login)
+

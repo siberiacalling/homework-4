@@ -5,9 +5,9 @@ from selenium.webdriver.common.by import By
 class AuthPage(BasePage):
     class Locators:
         LOGIN_FORM_CONTAINER = (By.CSS_SELECTOR, '.ag-popup__frame__layout__iframe')
-        LOGIN_FORM = (By.CSS_SELECTOR, 'input[name="Login"]')
+        LOGIN_FORM = (By.CSS_SELECTOR, 'input[name="username"]')
         TO_PASSWORD_BTN = (By.CSS_SELECTOR, 'button[data-test-id="next-button"]')
-        PASSWORD_FORM = (By.CSS_SELECTOR, 'input[name="Password"]')
+        PASSWORD_FORM = (By.CSS_SELECTOR, 'input[name="password"]')
         SUBMIT_BTN = (By.CSS_SELECTOR, 'button[data-test-id="submit-button"]')
         EMAIL_LABEL = (By.ID, 'PH_user-email')
 
