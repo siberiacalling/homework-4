@@ -5,12 +5,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage(object):
-    __timeout = 10
+    __timeout = 20
     __frequency = 0.1
 
     def __init__(self, driver: Remote):
         self.driver = driver
-        self.driver.implicitly_wait(10)
 
     def wait_for_visible(self, by, value) -> WebElement:
         return self.__wait().until(EC.presence_of_element_located((by, value)))
