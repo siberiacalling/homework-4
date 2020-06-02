@@ -31,6 +31,7 @@ class AddressBookPage(BasePage):
                                    ')=\'Добавить\']')
         PHONES_ARRAY = (By.XPATH, '//span[@class="contact__phones__item__value"]')
         EMAILS_ARRAY = (By.XPATH, '//a[@class="js-email-address"]')
+        BUTTONS_BELLOW_ARRAY = (By.XPATH, '//span[text()=\'Добавить поле\']')
 
         FIRSTNAME_EDIT_FORM = (By.NAME, 'firstname')
         LASTNAME_EDIT_FORM = (By.NAME, 'lastname')
@@ -52,11 +53,14 @@ class AddressBookPage(BasePage):
                 By.XPATH,
                 f'//span[text()=\'{lastname} {firstname}\']')
 
+        @staticmethod
+        def button_below_by_field_name(field_name: str):
+            return (By.XPATH,
+                    f'//ul[@class="form__dropdown__list form__dropdown__list_limit filters__dropdown__menu js-menu"]//a[text()=\'{field_name}\']')
+
     class ProjectXpath:
         @staticmethod
         def current_contact_container_in_card(lastname: str, new_firstname: str):
-            # xpath = '//*[contains(text(), \'' + lastname + " " + new_firstname + '\')]'
-            # new_xpath = f'//*[contains(text(), \'{lastname} {new_firstname}\')]'
             return f'//*[text()=\'{lastname} {new_firstname}\']'
 
     def current_contact_container_in_card(self, new_firstname, lastname):
@@ -174,3 +178,11 @@ class AddressBookPage(BasePage):
         parent_element = child_element.find_element_by_xpath('..')
         parent_element2 = parent_element.find_element_by_xpath('..')
         parent_element2.click()
+
+    def choose_field_button_below(self, field_name):
+        add_field_buttons = self.wait_for_all_elements(*self.Locators.BUTTONS_BELLOW_ARRAY)
+        parent_element = add_field_buttons[0].find_element_by_xpath('..')
+        parent_element.click()
+        all_buttons = self.wait_for_all_elements(*self.Locators.button_below_by_field_name(field_name))
+        self.driver.execute_script("arguments[0].click();", all_buttons[1])
+        # all_buttons[1].click()

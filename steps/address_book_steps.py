@@ -10,8 +10,9 @@ class AddressBookSteps(BaseSteps):
     def __init__(self, driver):
         super().__init__(AddressBookPage(driver))
 
-    class TestDataCreation:
-        def random_with_n_digits(self, n):
+    class TestDataGenerator:
+        @staticmethod
+        def random_with_n_digits(n):
             range_start = 10 ** (n - 1)
             range_end = (10 ** n) - 1
             return randint(range_start, range_end)
@@ -44,29 +45,36 @@ class AddressBookSteps(BaseSteps):
         popup.delete()
         popup.check_disappear()
 
-    def check_first_checkbox(self):
-        self.page.check_first_checkbox()
-
-    def check_second_checkbox(self):
-        self.page.check_second_checkbox()
-
     def click_edit_button(self):
         self.page.click_edit_button()
 
-    def add_another_phone(self):
-        self.page.click_add_phone_button()
-        generator = self.TestDataCreation()
+    def add_and_save_new_phone(self):
+        generator = self.TestDataGenerator()
         new_phone = generator.create_new_phone()
         self.page.add_another_field_by_input_name("phones", new_phone)
         self.page.click_submit_button()
+        return new_phone
+
+    def add_and_save_new_email(self):
+        generator = self.TestDataGenerator()
+        new_email = generator.create_new_email()
+        self.page.add_another_field_by_input_name("emails", new_email)
+        self.page.click_submit_button()
+        return new_email
+
+    def add_another_phone(self):
+        self.page.click_add_phone_button()
+        new_phone = self.add_and_save_new_phone()
+        return self.page.phone_was_added_successfully(new_phone)
+
+    def add_another_phone_button_below(self):
+        self.page.choose_field_button_below('Телефон')
+        new_phone = self.add_and_save_new_phone()
         return self.page.phone_was_added_successfully(new_phone)
 
     def add_another_email(self):
         self.page.click_add_email_button()
-        generator = self.TestDataCreation()
-        new_email = generator.create_new_email()
-        self.page.add_another_field_by_input_name("emails", new_email)
-        self.page.click_submit_button()
+        new_email = self.add_and_save_new_email()
         return self.page.email_was_added_successfully(new_email)
 
     def change_email_field(self, new_email):
@@ -99,3 +107,12 @@ class AddressBookSteps(BaseSteps):
 
     def go_to_adressbook_start_page(self):
         self.page.click_adressbook_href()
+
+    def edit_first_contact_in_list(self):
+        self.page.check_first_checkbox()
+        self.page.click_edit_button()
+
+    def edit_two_first_contact_in_list(self):
+        self.page.check_first_checkbox()
+        self.page.check_second_checkbox()
+        self.page.click_edit_button()

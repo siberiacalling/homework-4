@@ -1,5 +1,3 @@
-from asyncio import sleep
-
 from framework.test import BaseTest
 from steps.auth_steps import AuthSteps
 from steps.address_book_steps import AddressBookSteps
@@ -20,8 +18,6 @@ class EditContactTest(BaseTest):
     def test_edit_without_selected_contact(self):
         old_window_url = self.driver.current_url
         self.steps = AddressBookSteps(self.driver)
-        self.steps.check_first_checkbox()
-        self.steps.check_second_checkbox()
         self.steps.click_edit_button()
         new_window_url = self.driver.current_url
         assert (new_window_url == old_window_url)
@@ -29,7 +25,7 @@ class EditContactTest(BaseTest):
     def test_edit_two_selected_contacts(self):
         old_window_url = self.driver.current_url
         self.steps = AddressBookSteps(self.driver)
-        self.steps.click_edit_button()
+        self.steps.edit_two_first_contact_in_list()
         new_window_url = self.driver.current_url
         assert (new_window_url == old_window_url)
 
@@ -56,8 +52,7 @@ class EditContactTest(BaseTest):
 
     def test_edit_contact_delete_all_info(self):
         self.steps = AddressBookSteps(self.driver)
-        self.steps.check_first_checkbox()
-        self.steps.click_edit_button()
+        self.steps.edit_first_contact_in_list()
         old_window_url = self.driver.current_url
         self.steps.fill_contact_info("", "", "", "", "")
         new_window_url = self.driver.current_url
@@ -65,8 +60,7 @@ class EditContactTest(BaseTest):
 
     def test_edit_contact_wrong_email_cyrillic(self):
         self.steps = AddressBookSteps(self.driver)
-        self.steps.check_first_checkbox()
-        self.steps.click_edit_button()
+        self.steps.edit_first_contact_in_list()
         old_window_url = self.driver.current_url
         self.steps.change_email_field("ааааыыввы")
         new_window_url = self.driver.current_url
@@ -74,8 +68,7 @@ class EditContactTest(BaseTest):
 
     def test_edit_contact_wrong_email_without_at_sign(self):
         self.steps = AddressBookSteps(self.driver)
-        self.steps.check_first_checkbox()
-        self.steps.click_edit_button()
+        self.steps.edit_first_contact_in_list()
         old_window_url = self.driver.current_url
         self.steps.change_email_field("fffffffdassa")
         new_window_url = self.driver.current_url
@@ -83,12 +76,15 @@ class EditContactTest(BaseTest):
 
     def test_edit_contact_add_another_phone(self):
         self.steps = AddressBookSteps(self.driver)
-        self.steps.check_first_checkbox()
-        self.steps.click_edit_button()
+        self.steps.edit_first_contact_in_list()
         assert self.steps.add_another_phone()
 
     def test_edit_contact_add_another_email(self):
         self.steps = AddressBookSteps(self.driver)
-        self.steps.check_first_checkbox()
-        self.steps.click_edit_button()
+        self.steps.edit_first_contact_in_list()
         assert self.steps.add_another_email()
+
+    def test_edit_contact_add_another_phone_button_below(self):
+        self.steps = AddressBookSteps(self.driver)
+        self.steps.edit_first_contact_in_list()
+        assert self.steps.add_another_phone_button_below()
