@@ -31,7 +31,13 @@ class AddressBookPage(BasePage):
                                    ')=\'Добавить\']')
         PHONES_ARRAY = (By.XPATH, '//span[@class="contact__phones__item__value"]')
         EMAILS_ARRAY = (By.XPATH, '//a[@class="js-email-address"]')
+        TITLE_ARRAY = (By.XPATH, '//span[@class="contact__job__item contact__job__item_job_title"]')
+        BOSS_ARRAY = (By.XPATH, '//div[@class="contact__job__item contact__job__item_boss"]')
+        NICK_ARRAY = (By.XPATH, '//span[@class="contact__header__title__additional"]')
+        GENDERS_ARRAY = (By.XPATH, '//input[@name="sex"]')
         BUTTONS_BELLOW_ARRAY = (By.XPATH, '//span[text()=\'Добавить поле\']')
+
+        GENDER_HEADER = (By.XPATH, '//div[@class="contact__header__additional"]')
 
         FIRSTNAME_EDIT_FORM = (By.NAME, 'firstname')
         LASTNAME_EDIT_FORM = (By.NAME, 'lastname')
@@ -111,10 +117,6 @@ class AddressBookPage(BasePage):
         email_input[-1].clear()
         email_input[-1].send_keys(new_field)
 
-    def phone_was_added_successfully(self, new_phone):
-        contact_phones = self.wait_for_all_elements(*self.Locators.PHONES_ARRAY)
-        return contact_phones[-1].text == new_phone
-
     def email_was_added_successfully(self, new_email):
         contact_emails = self.wait_for_all_elements(*self.Locators.EMAILS_ARRAY)
         return contact_emails[-1].text == new_email
@@ -185,4 +187,28 @@ class AddressBookPage(BasePage):
         parent_element.click()
         all_buttons = self.wait_for_all_elements(*self.Locators.button_below_by_field_name(field_name))
         self.driver.execute_script("arguments[0].click();", all_buttons[1])
-        # all_buttons[1].click()
+
+    def click_male_gender(self):
+        genders = self.wait_for_all_elements(*self.Locators.GENDERS_ARRAY)
+        self.driver.execute_script("arguments[0].click();", genders[0])
+
+    def phone_was_added_successfully(self, new_phone):
+        contact_phones = self.wait_for_all_elements(*self.Locators.PHONES_ARRAY)
+        return contact_phones[-1].text == new_phone
+
+    def job_title_was_added_successfully(self, job_title):
+        value_in_contact_card = self.wait_for_all_elements(*self.Locators.TITLE_ARRAY)
+        return value_in_contact_card[-1].text == job_title
+
+    def boss_was_added_successfully(self, boss):
+        value_in_contact_card = self.wait_for_all_elements(*self.Locators.BOSS_ARRAY)
+        return value_in_contact_card[-1].text.split()[1] == boss
+
+    def nick_was_added_successfully(self, nick):
+        check_value = f'«{nick}»'
+        value_in_contact_card = self.wait_for_all_elements(*self.Locators.NICK_ARRAY)
+        return value_in_contact_card[-1].text == check_value
+
+    def gender_was_added_successfully(self):
+        contact_header = self.wait_for_visible(*self.Locators.GENDER_HEADER)
+        return contact_header.text == 'Мужской'

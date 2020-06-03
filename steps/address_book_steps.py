@@ -48,33 +48,12 @@ class AddressBookSteps(BaseSteps):
     def click_edit_button(self):
         self.page.click_edit_button()
 
-    def add_and_save_new_phone(self):
-        generator = self.TestDataGenerator()
-        new_phone = generator.create_new_phone()
-        self.page.add_another_field_by_input_name("phones", new_phone)
-        self.page.click_submit_button()
-        return new_phone
-
-    def add_and_save_new_email(self):
+    def add_another_email(self):
+        self.page.click_add_email_button()
         generator = self.TestDataGenerator()
         new_email = generator.create_new_email()
         self.page.add_another_field_by_input_name("emails", new_email)
         self.page.click_submit_button()
-        return new_email
-
-    def add_another_phone(self):
-        self.page.click_add_phone_button()
-        new_phone = self.add_and_save_new_phone()
-        return self.page.phone_was_added_successfully(new_phone)
-
-    def add_another_phone_button_below(self):
-        self.page.choose_field_button_below('Телефон')
-        new_phone = self.add_and_save_new_phone()
-        return self.page.phone_was_added_successfully(new_phone)
-
-    def add_another_email(self):
-        self.page.click_add_email_button()
-        new_email = self.add_and_save_new_email()
         return self.page.email_was_added_successfully(new_email)
 
     def change_email_field(self, new_email):
@@ -116,3 +95,43 @@ class AddressBookSteps(BaseSteps):
         self.page.check_first_checkbox()
         self.page.check_second_checkbox()
         self.page.click_edit_button()
+
+    def add_another_phone(self):
+        self.page.click_add_phone_button()
+        generator = self.TestDataGenerator()
+        new_phone = generator.create_new_phone()
+        self.page.add_another_field_by_input_name("phones", new_phone)
+        self.page.click_submit_button()
+        return self.page.phone_was_added_successfully(new_phone)
+
+    def add_another_phone_button_below(self):
+        self.page.choose_field_button_below('Телефон')
+        generator = self.TestDataGenerator()
+        new_phone = generator.create_new_phone()
+        self.page.add_another_field_by_input_name("phones", new_phone)
+        self.page.click_submit_button()
+        return self.page.phone_was_added_successfully(new_phone)
+
+    def add_job_title_button_below(self, job_title):
+        self.page.choose_field_button_below('Должность')
+        self.page.add_another_field_by_input_name("job_title", job_title)
+        self.page.click_submit_button()
+        return self.page.job_title_was_added_successfully(job_title)
+
+    def add_boss_button_below(self, boss):
+        self.page.choose_field_button_below('Руководитель')
+        self.page.add_another_field_by_input_name("boss", boss)
+        self.page.click_submit_button()
+        return self.page.boss_was_added_successfully(boss)
+
+    def add_nick_button_below(self, nick):
+        self.page.choose_field_button_below('Псевдоним')
+        self.page.add_another_field_by_input_name("nick", nick)
+        self.page.click_submit_button()
+        return self.page.nick_was_added_successfully(nick)
+
+    def add_gender_button_below(self):
+        self.page.choose_field_button_below('Пол')
+        self.page.click_male_gender()
+        self.page.click_submit_button()
+        return self.page.gender_was_added_successfully()
