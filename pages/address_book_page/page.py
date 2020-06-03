@@ -31,11 +31,14 @@ class AddressBookPage(BasePage):
                                    ')=\'Добавить\']')
         PHONES_ARRAY = (By.XPATH, '//span[@class="contact__phones__item__value"]')
         EMAILS_ARRAY = (By.XPATH, '//a[@class="js-email-address"]')
-        TITLE_ARRAY = (By.XPATH, '//span[@class="contact__job__item contact__job__item_job_title"]')
+        JOB_TITLE_ARRAY = (By.XPATH, '//span[@class="contact__job__item contact__job__item_job_title"]')
         BOSS_ARRAY = (By.XPATH, '//div[@class="contact__job__item contact__job__item_boss"]')
         NICK_ARRAY = (By.XPATH, '//span[@class="contact__header__title__additional"]')
         GENDERS_ARRAY = (By.XPATH, '//input[@name="sex"]')
         BUTTONS_BELLOW_ARRAY = (By.XPATH, '//span[text()=\'Добавить поле\']')
+        DELETE_JOB_TITLE_ARRAY = (By.XPATH, '//div[@data-for="job_title"]//a[@title="Удалить"]')
+        DELETE_BOSS_ARRAY = (By.XPATH, '//div[@data-for="boss"]//a[@title="Удалить"]')
+        DELETE_NICK_ARRAY = (By.XPATH, '//div[@data-for="nick"]//a[@title="Удалить"]')
 
         GENDER_HEADER = (By.XPATH, '//div[@class="contact__header__additional"]')
 
@@ -197,7 +200,7 @@ class AddressBookPage(BasePage):
         return contact_phones[-1].text == new_phone
 
     def job_title_was_added_successfully(self, job_title):
-        value_in_contact_card = self.wait_for_all_elements(*self.Locators.TITLE_ARRAY)
+        value_in_contact_card = self.wait_for_all_elements(*self.Locators.JOB_TITLE_ARRAY)
         return value_in_contact_card[-1].text == job_title
 
     def boss_was_added_successfully(self, boss):
@@ -212,3 +215,33 @@ class AddressBookPage(BasePage):
     def gender_was_added_successfully(self):
         contact_header = self.wait_for_visible(*self.Locators.GENDER_HEADER)
         return contact_header.text == 'Мужской'
+
+    def click_delete_button_job_title(self):
+        delete_buttons = self.wait_for_all_elements(*self.Locators.DELETE_JOB_TITLE_ARRAY)
+        delete_buttons[0].click()
+
+    def job_title_was_deleted(self):
+        job_title_element = self.driver.find_elements(*self.Locators.JOB_TITLE_ARRAY)
+        if not job_title_element:
+            return True
+        return False
+
+    def click_delete_button_boss(self):
+        delete_buttons = self.wait_for_all_elements(*self.Locators.DELETE_BOSS_ARRAY)
+        delete_buttons[0].click()
+
+    def boss_was_deleted(self):
+        boss_element = self.driver.find_elements(*self.Locators.BOSS_ARRAY)
+        if not boss_element:
+            return True
+        return False
+
+    def click_delete_button_nick(self):
+        delete_buttons = self.wait_for_all_elements(*self.Locators.DELETE_NICK_ARRAY)
+        delete_buttons[0].click()
+
+    def nick_was_deleted(self):
+        nick_element = self.driver.find_elements(*self.Locators.NICK_ARRAY)
+        if not nick_element:
+            return True
+        return False

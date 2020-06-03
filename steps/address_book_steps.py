@@ -110,28 +110,60 @@ class AddressBookSteps(BaseSteps):
         new_phone = generator.create_new_phone()
         self.page.add_another_field_by_input_name("phones", new_phone)
         self.page.click_submit_button()
+        return new_phone
+
+    def phone_was_added_successfully(self, new_phone):
         return self.page.phone_was_added_successfully(new_phone)
 
     def add_job_title_button_below(self, job_title):
         self.page.choose_field_button_below('Должность')
         self.page.add_another_field_by_input_name("job_title", job_title)
         self.page.click_submit_button()
+
+    def job_title_was_added_successfully(self, job_title):
         return self.page.job_title_was_added_successfully(job_title)
 
     def add_boss_button_below(self, boss):
         self.page.choose_field_button_below('Руководитель')
         self.page.add_another_field_by_input_name("boss", boss)
         self.page.click_submit_button()
+
+    def boss_was_added_successfully(self, boss):
         return self.page.boss_was_added_successfully(boss)
 
     def add_nick_button_below(self, nick):
         self.page.choose_field_button_below('Псевдоним')
         self.page.add_another_field_by_input_name("nick", nick)
         self.page.click_submit_button()
+
+    def nick_was_added_successfully(self, nick):
         return self.page.nick_was_added_successfully(nick)
 
     def add_gender_button_below(self):
         self.page.choose_field_button_below('Пол')
         self.page.click_male_gender()
         self.page.click_submit_button()
+
+    def gender_was_added_successfully(self):
         return self.page.gender_was_added_successfully()
+
+    def delete_job_title(self):
+        self.page.click_delete_button_job_title()
+        self.page.click_submit_button()
+
+    def job_title_was_deleted(self):
+        return self.page.job_title_was_deleted()
+
+    def delete_boss(self):
+        self.page.click_delete_button_boss()
+        self.page.click_submit_button()
+
+    def boss_was_deleted(self):
+        return self.page.boss_was_deleted()
+
+    def delete_nick(self):
+        self.page.click_delete_button_nick()
+        self.page.click_submit_button()
+
+    def nick_was_deleted(self):
+        return self.page.nick_was_deleted()
