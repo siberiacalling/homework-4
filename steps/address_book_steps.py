@@ -64,6 +64,10 @@ class AddressBookSteps(BaseSteps):
         contact_card = self.page.contact_card()
         return contact_card.email_was_added_successfully(new_email)
 
+    def email_was_added_successfully(self, email):
+        contact_card = self.page.contact_card()
+        return contact_card.email_was_added_successfully(email)
+
     def change_email_field(self, new_email):
         edit_form = self.page.edit_form()
         edit_form.change_email(new_email)
@@ -88,9 +92,9 @@ class AddressBookSteps(BaseSteps):
         self.page.click_contact_in_list(firstname, lastname)
         self.page.click_edit_button()
 
-    def check_edited_field(self, new_firstname, lastname):
+    def check_edited_contact_title(self, new_firstname, lastname):
         contact_card = self.page.contact_card()
-        return contact_card.check_element_exists_by_xpath(new_firstname, lastname)
+        return contact_card.check_contact_title_by_firstname_and_lastname(new_firstname, lastname)
 
     def delete_tested_contact_from_contact_card(self):
         contact_card = self.page.contact_card()

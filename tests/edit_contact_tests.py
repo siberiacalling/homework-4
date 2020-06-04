@@ -40,7 +40,7 @@ class EditContactTest(BaseTest):
                                        self.TEST_PHONE)
         self.steps.click_edit_button()
         self.steps.change_firstname_field(self.NEW_FIRSTNAME)
-        edit_result = self.steps.check_edited_field(self.NEW_FIRSTNAME, self.TEST_LASTNAME)
+        edit_result = self.steps.check_edited_contact_title(self.NEW_FIRSTNAME, self.TEST_LASTNAME)
         self.steps.delete_tested_contact_from_contact_card()
         assert edit_result
 
@@ -51,7 +51,7 @@ class EditContactTest(BaseTest):
         self.steps.go_to_adressbook_start_page()
         self.steps.edit_current_contact_in_list(self.TEST_FIRSTNAME, self.TEST_LASTNAME)
         self.steps.change_firstname_field(self.NEW_FIRSTNAME)
-        edit_result = self.steps.check_edited_field(self.NEW_FIRSTNAME, self.TEST_LASTNAME)
+        edit_result = self.steps.check_edited_contact_title(self.NEW_FIRSTNAME, self.TEST_LASTNAME)
         self.steps.delete_tested_contact_from_contact_card()
         assert edit_result
 

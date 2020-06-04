@@ -20,9 +20,13 @@ class ContactCard(BasePage):
 
         @staticmethod
         def current_contact_container_in_card(lastname: str, new_firstname: str):
+            if not new_firstname:
+                return By.XPATH, f'//*[text()=\'{lastname}\']'
+            if not lastname:
+                return By.XPATH, f'//*[text()=\'{new_firstname}\']'
             return By.XPATH, f'//*[text()=\'{lastname} {new_firstname}\']'
 
-    def check_element_exists_by_xpath(self, new_firstname, lastname):
+    def check_contact_title_by_firstname_and_lastname(self, new_firstname, lastname):
         try:
             self.wait_for_visible(*self.Locators.current_contact_container_in_card(lastname, new_firstname))
             return True

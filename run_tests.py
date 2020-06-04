@@ -5,6 +5,7 @@ import unittest
 from tests.group_tests import *
 from tests.edit_contact_tests import *
 from tests.write_letter_tests import *
+from tests.add_contact_tests import *
 
 if __name__ == '__main__':
     unittest.main()

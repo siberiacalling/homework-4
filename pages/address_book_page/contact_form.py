@@ -60,25 +60,26 @@ class ContactForm(BasePage):
         delete_buttons[0].click()
 
     def fill_contact(self, firstname, lastname, company, email, phone):
-        firstname_field = self.wait_for_visible(*self.Locators.FIRSTNAME_EDIT_FORM)
-        firstname_field.clear()
-        firstname_field.send_keys(firstname)
-
-        lastname_field = self.wait_for_visible(*self.Locators.LASTNAME_EDIT_FORM)
-        lastname_field.clear()
-        lastname_field.send_keys(lastname)
-
-        company_field = self.wait_for_visible(*self.Locators.COMPANY_EDIT_FORM)
-        company_field.clear()
-        company_field.send_keys(company)
-
-        email_field = self.wait_for_visible(*self.Locators.EMAILS_EDIT_FORM)
-        email_field.clear()
-        email_field.send_keys(email)
-
-        phone_field = self.wait_for_visible(*self.Locators.FIRST_PHONE_EDIT_FORM)
-        phone_field.clear()
-        phone_field.send_keys(phone)
+        if firstname:
+            firstname_field = self.wait_for_visible(*self.Locators.FIRSTNAME_EDIT_FORM)
+            firstname_field.clear()
+            firstname_field.send_keys(firstname)
+        if lastname:
+            lastname_field = self.wait_for_visible(*self.Locators.LASTNAME_EDIT_FORM)
+            lastname_field.clear()
+            lastname_field.send_keys(lastname)
+        if company:
+            company_field = self.wait_for_visible(*self.Locators.COMPANY_EDIT_FORM)
+            company_field.clear()
+            company_field.send_keys(company)
+        if email:
+            email_field = self.wait_for_visible(*self.Locators.EMAILS_EDIT_FORM)
+            email_field.clear()
+            email_field.send_keys(email)
+        if phone:
+            phone_field = self.wait_for_visible(*self.Locators.FIRST_PHONE_EDIT_FORM)
+            phone_field.clear()
+            phone_field.send_keys(phone)
 
     def change_email(self, new_email):
         email_field = self.wait_for_visible(*self.Locators.EMAILS_EDIT_FORM)
