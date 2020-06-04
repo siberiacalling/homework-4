@@ -13,6 +13,8 @@ class EditContactTest(BaseTest):
     TEST_BOSS = "test_boss"
     TEST_NICK = "test_nick"
 
+    EMAIL_WITHOUT_AT_SIGN = "fffffffdassa"
+    EMAIL_CYRILLIC = "ааааыыввы"
     NEW_FIRSTNAME = "test_firstname2"
 
     def before_each(self):
@@ -39,7 +41,7 @@ class EditContactTest(BaseTest):
         self.steps.click_edit_button()
         self.steps.change_firstname_field(self.NEW_FIRSTNAME)
         edit_result = self.steps.check_edited_field(self.NEW_FIRSTNAME, self.TEST_LASTNAME)
-        self.steps.delete_tested_contact()
+        self.steps.delete_tested_contact_from_contact_card()
         assert edit_result
 
     def test_edit_contact_list_success(self):
@@ -50,7 +52,7 @@ class EditContactTest(BaseTest):
         self.steps.edit_current_contact_in_list(self.TEST_FIRSTNAME, self.TEST_LASTNAME)
         self.steps.change_firstname_field(self.NEW_FIRSTNAME)
         edit_result = self.steps.check_edited_field(self.NEW_FIRSTNAME, self.TEST_LASTNAME)
-        self.steps.delete_tested_contact()
+        self.steps.delete_tested_contact_from_contact_card()
         assert edit_result
 
     def test_delete_all_info(self):
@@ -65,7 +67,7 @@ class EditContactTest(BaseTest):
         self.steps = AddressBookSteps(self.driver)
         self.steps.edit_first_contact_in_list()
         old_window_url = self.driver.current_url
-        self.steps.change_email_field("ааааыыввы")
+        self.steps.change_email_field(self.EMAIL_CYRILLIC)
         new_window_url = self.driver.current_url
         assert (new_window_url == old_window_url)
 
@@ -73,7 +75,7 @@ class EditContactTest(BaseTest):
         self.steps = AddressBookSteps(self.driver)
         self.steps.edit_first_contact_in_list()
         old_window_url = self.driver.current_url
-        self.steps.change_email_field("fffffffdassa")
+        self.steps.change_email_field(self.EMAIL_WITHOUT_AT_SIGN)
         new_window_url = self.driver.current_url
         assert (new_window_url == old_window_url)
 
@@ -97,64 +99,57 @@ class EditContactTest(BaseTest):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_job_title_button_below(self.TEST_JOB_TITLE)
         assert self.steps.job_title_was_added_successfully(self.TEST_JOB_TITLE)
-        self.steps.delete_tested_contact()
+        self.steps.delete_tested_contact_from_contact_card()
 
     def test_add_boss_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_boss_button_below(self.TEST_BOSS)
         assert self.steps.boss_was_added_successfully(self.TEST_BOSS)
-        self.steps.delete_tested_contact()
+        self.steps.delete_tested_contact_from_contact_card()
 
     def test_add_nick_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_nick_button_below(self.TEST_NICK)
         assert self.steps.nick_was_added_successfully(self.TEST_NICK)
-        self.steps.delete_tested_contact()
+        self.steps.delete_tested_contact_from_contact_card()
 
     def test_add_gender_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_gender_button_below()
         assert self.steps.gender_was_added_successfully()
-        self.steps.delete_tested_contact()
+        self.steps.delete_tested_contact_from_contact_card()
 
     def test_delete_job_title(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_job_title_button_below(self.TEST_JOB_TITLE)
-        self.steps.click_edit_button()
         self.steps.delete_job_title()
         assert self.steps.job_title_was_deleted()
+        self.steps.delete_tested_contact_from_contact_card()
 
     def test_delete_boss(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_boss_button_below(self.TEST_BOSS)
-        self.steps.click_edit_button()
         self.steps.delete_boss()
         assert self.steps.boss_was_deleted()
+        self.steps.delete_tested_contact_from_contact_card()
 
-    def test_edit_contact_delete_nick(self):
+    def test_delete_nick(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
-        self.steps.click_edit_button()
         self.steps.add_nick_button_below(self.TEST_NICK)
-        self.steps.click_edit_button()
         self.steps.delete_nick()
         assert self.steps.nick_was_deleted()
+        self.steps.delete_tested_contact_from_contact_card()

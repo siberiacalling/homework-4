@@ -49,40 +49,50 @@ class AddressBookSteps(BaseSteps):
         self.page.click_edit_button()
 
     def add_another_email(self):
-        self.page.click_add_email_button()
         generator = self.TestDataGenerator()
         new_email = generator.create_new_email()
-        self.page.add_another_field_by_input_name("emails", new_email)
-        self.page.click_submit_button()
-        return self.page.email_was_added_successfully(new_email)
+
+        edit_form = self.page.edit_form()
+        edit_form.click_add_email_button()
+
+        edit_form.add_another_field_by_input_name("emails", new_email)
+        edit_form.click_submit_button()
+
+        contact_card = self.page.contact_card()
+        return contact_card.email_was_added_successfully(new_email)
 
     def change_email_field(self, new_email):
-        self.page.change_email(new_email)
-        self.page.click_submit_button()
+        edit_form = self.page.edit_form()
+        edit_form.change_email(new_email)
+        edit_form.click_submit_button()
 
     def fill_contact_info(self, firstname, lastname, company, email, phone):
-        self.page.fill_contact(firstname, lastname, company, email, phone)
-        self.page.click_submit_button()
+        edit_form = self.page.edit_form()
+        edit_form.fill_contact(firstname, lastname, company, email, phone)
+        edit_form.click_submit_button()
 
     def create_test_contact(self, firstname, lastname, company, email, phone):
-        self.page.click_add_button()
-        self.page.fill_contact(firstname, lastname, company, email, phone)
-        self.page.click_submit_button()
+        form = self.page.open_add_contact_form()
+        form.fill_contact(firstname, lastname, company, email, phone)
+        form.click_submit_button()
 
     def change_firstname_field(self, new_firstname):
-        self.page.change_firstname(new_firstname)
-        self.page.click_submit_button()
+        edit_form = self.page.edit_form()
+        edit_form.change_firstname(new_firstname)
+        edit_form.click_submit_button()
 
     def edit_current_contact_in_list(self, firstname, lastname):
         self.page.click_contact_in_list(firstname, lastname)
         self.page.click_edit_button()
 
     def check_edited_field(self, new_firstname, lastname):
-        return self.page.check_element_exists_by_xpath(new_firstname, lastname)
+        contact_card = self.page.contact_card()
+        return contact_card.check_element_exists_by_xpath(new_firstname, lastname)
 
-    def delete_tested_contact(self):
-        self.page.click_remove_button()
-        self.page.confirm_remove()
+    def delete_tested_contact_from_contact_card(self):
+        contact_card = self.page.contact_card()
+        contact_card.click_remove_button()
+        contact_card.confirm_remove()
 
     def go_to_adressbook_start_page(self):
         self.page.click_adressbook_href()
@@ -97,73 +107,95 @@ class AddressBookSteps(BaseSteps):
         self.page.click_edit_button()
 
     def add_another_phone(self):
-        self.page.click_add_phone_button()
         generator = self.TestDataGenerator()
         new_phone = generator.create_new_phone()
-        self.page.add_another_field_by_input_name("phones", new_phone)
-        self.page.click_submit_button()
-        return self.page.phone_was_added_successfully(new_phone)
+
+        edit_form = self.page.edit_form()
+        edit_form.click_add_phone_button()
+        edit_form.add_another_field_by_input_name("phones", new_phone)
+        edit_form.click_submit_button()
+
+        contact_card = self.page.contact_card()
+        return contact_card.phone_was_added_successfully(new_phone)
 
     def add_another_phone_button_below(self):
-        self.page.choose_field_button_below('Телефон')
         generator = self.TestDataGenerator()
         new_phone = generator.create_new_phone()
-        self.page.add_another_field_by_input_name("phones", new_phone)
-        self.page.click_submit_button()
+
+        edit_form = self.page.edit_form()
+        edit_form.choose_field_button_below('Телефон')
+        edit_form.add_another_field_by_input_name("phones", new_phone)
+        edit_form.click_submit_button()
         return new_phone
 
-    def phone_was_added_successfully(self, new_phone):
-        return self.page.phone_was_added_successfully(new_phone)
-
     def add_job_title_button_below(self, job_title):
-        self.page.choose_field_button_below('Должность')
-        self.page.add_another_field_by_input_name("job_title", job_title)
-        self.page.click_submit_button()
-
-    def job_title_was_added_successfully(self, job_title):
-        return self.page.job_title_was_added_successfully(job_title)
+        edit_form = self.page.open_edit_form()
+        edit_form.choose_field_button_below('Должность')
+        edit_form.add_another_field_by_input_name("job_title", job_title)
+        edit_form.click_submit_button()
 
     def add_boss_button_below(self, boss):
-        self.page.choose_field_button_below('Руководитель')
-        self.page.add_another_field_by_input_name("boss", boss)
-        self.page.click_submit_button()
-
-    def boss_was_added_successfully(self, boss):
-        return self.page.boss_was_added_successfully(boss)
+        edit_form = self.page.open_edit_form()
+        edit_form.choose_field_button_below('Руководитель')
+        edit_form.add_another_field_by_input_name("boss", boss)
+        edit_form.click_submit_button()
 
     def add_nick_button_below(self, nick):
-        self.page.choose_field_button_below('Псевдоним')
-        self.page.add_another_field_by_input_name("nick", nick)
-        self.page.click_submit_button()
+        edit_form = self.page.open_edit_form()
+        edit_form = self.page.edit_form()
+        edit_form.choose_field_button_below('Псевдоним')
+        edit_form.add_another_field_by_input_name("nick", nick)
+        edit_form.click_submit_button()
+
+    def boss_was_added_successfully(self, boss):
+        contact_card = self.page.contact_card()
+        return contact_card.boss_was_added_successfully(boss)
 
     def nick_was_added_successfully(self, nick):
-        return self.page.nick_was_added_successfully(nick)
-
-    def add_gender_button_below(self):
-        self.page.choose_field_button_below('Пол')
-        self.page.click_male_gender()
-        self.page.click_submit_button()
+        contact_card = self.page.contact_card()
+        return contact_card.nick_was_added_successfully(nick)
 
     def gender_was_added_successfully(self):
-        return self.page.gender_was_added_successfully()
+        contact_card = self.page.contact_card()
+        return contact_card.gender_was_added_successfully()
+
+    def phone_was_added_successfully(self, new_phone):
+        contact_card = self.page.contact_card()
+        return contact_card.phone_was_added_successfully(new_phone)
+
+    def job_title_was_added_successfully(self, job_title):
+        contact_card = self.page.contact_card()
+        return contact_card.job_title_was_added_successfully(job_title)
+
+    def add_gender_button_below(self):
+        edit_form = self.page.open_edit_form()
+        edit_form.choose_field_button_below('Пол')
+        edit_form.click_male_gender()
+        edit_form.click_submit_button()
 
     def delete_job_title(self):
-        self.page.click_delete_button_job_title()
-        self.page.click_submit_button()
-
-    def job_title_was_deleted(self):
-        return self.page.job_title_was_deleted()
+        form = self.page.open_edit_form()
+        form.click_delete_button_job_title()
+        form.click_submit_button()
 
     def delete_boss(self):
-        self.page.click_delete_button_boss()
-        self.page.click_submit_button()
-
-    def boss_was_deleted(self):
-        return self.page.boss_was_deleted()
+        edit_form = self.page.open_edit_form()
+        edit_form.click_delete_button_boss()
+        edit_form.click_submit_button()
 
     def delete_nick(self):
-        self.page.click_delete_button_nick()
-        self.page.click_submit_button()
+        edit_form = self.page.open_edit_form()
+        edit_form.click_delete_button_nick()
+        edit_form.click_submit_button()
 
     def nick_was_deleted(self):
-        return self.page.nick_was_deleted()
+        contact_card = self.page.contact_card()
+        return contact_card.nick_was_deleted()
+
+    def boss_was_deleted(self):
+        contact_card = self.page.contact_card()
+        return contact_card.boss_was_deleted()
+
+    def job_title_was_deleted(self):
+        contact_card = self.page.contact_card()
+        return contact_card.job_title_was_deleted()
