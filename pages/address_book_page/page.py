@@ -20,6 +20,7 @@ class AddressBookPage(BasePage):
 
         EDIT_BUTTON = (By.XPATH, '//div[@data-name="edit"]')
         ADD_BUTTON = (By.XPATH, '//div[@data-name="add"]')
+        SEND_BUTTON = (By.XPATH, '//div[@data-name="send"]')
         SUBMIT_BUTTON = (By.XPATH, '//div[@data-name="submit"]')
 
         ADDRESSBOOK_HREF = (By.XPATH, '//a[contains(@href,"/addressbook")]')
@@ -83,6 +84,9 @@ class AddressBookPage(BasePage):
 
     def click_edit_button(self):
         self.wait_for_clickable(*self.Locators.EDIT_BUTTON).click()
+
+    def click_send_button(self):
+        self.wait_for_clickable(*self.Locators.SEND_BUTTON).click()
 
     def click_add_button(self):
         self.wait_for_clickable(*self.Locators.ADD_BUTTON).click()

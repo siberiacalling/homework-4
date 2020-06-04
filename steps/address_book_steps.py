@@ -48,6 +48,9 @@ class AddressBookSteps(BaseSteps):
     def click_edit_button(self):
         self.page.click_edit_button()
 
+    def click_send_button(self):
+        self.page.click_send_button()
+
     def add_another_email(self):
         generator = self.TestDataGenerator()
         new_email = generator.create_new_email()
@@ -199,3 +202,11 @@ class AddressBookSteps(BaseSteps):
     def job_title_was_deleted(self):
         contact_card = self.page.contact_card()
         return contact_card.job_title_was_deleted()
+
+    def select_one_contact_from_list(self):
+        self.page.check_first_checkbox()
+
+    def select_two_contacts_from_list(self):
+        self.page.check_first_checkbox()
+        self.page.check_second_checkbox()
+
