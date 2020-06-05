@@ -99,3 +99,9 @@ class AddressBookPage(BasePage):
         parent_element = child_element.find_element_by_xpath('..')
         parent_element2 = parent_element.find_element_by_xpath('..')
         parent_element2.click()
+
+    def is_test_contact_in_list(self, firstname, lastname):
+        contact = self.driver.find_elements(*self.Locators.current_contact_container_in_list(firstname, lastname))
+        if contact:
+            return True
+        return False

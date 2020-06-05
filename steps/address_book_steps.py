@@ -172,7 +172,6 @@ class AddressBookSteps(BaseSteps):
             return self.nick_not_on_page()
         form.click_submit_button()
 
-
     def change_firstname_field(self, new_firstname):
         edit_form = self.page.edit_form()
         edit_form.change_firstname(new_firstname)
@@ -181,6 +180,12 @@ class AddressBookSteps(BaseSteps):
     def edit_current_contact_in_list(self, firstname, lastname):
         self.page.click_contact_in_list(firstname, lastname)
         self.page.click_edit_button()
+
+    def click_test_contact_in_list(self, firstname, lastname):
+        self.page.click_contact_in_list(firstname, lastname)
+
+    def is_test_contact_in_list(self, firstname, lastname):
+        return self.page.is_test_contact_in_list(firstname, lastname)
 
     def check_edited_contact_title(self, new_firstname, lastname):
         contact_card = self.page.contact_card()
@@ -351,3 +356,14 @@ class AddressBookSteps(BaseSteps):
     def select_two_contacts_from_list(self):
         self.page.check_first_checkbox()
         self.page.check_second_checkbox()
+
+    def open_add_contact_form(self):
+        form = self.page.open_add_contact_form()
+
+    def click_reset_button(self):
+        form = self.page.edit_form()
+        form.click_reset_button()
+
+    def click_remove_button(self):
+        form = self.page.edit_form()
+        form.click_remove_button()

@@ -159,3 +159,11 @@ class EditContactTest(BaseTest):
         self.steps.delete_nick()
         assert self.steps.nick_not_on_page()
         self.steps.delete_tested_contact_from_contact_card()
+
+    def test_cancel_edit_contact(self):
+        self.steps = AddressBookSteps(self.driver)
+        self.steps.edit_first_contact_in_list()
+        old_url = self.driver.current_url
+        self.steps.click_reset_button()
+        new_url = self.driver.current_url
+        assert (old_url != new_url)

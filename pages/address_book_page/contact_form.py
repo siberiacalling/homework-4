@@ -25,6 +25,8 @@ class ContactForm(BasePage):
         FIRST_PHONE_EDIT_FORM = (By.ID, 'phones_0')
 
         SUBMIT_BUTTON = (By.XPATH, '//div[@data-name="submit"]')
+        RESET_BUTTON = (By.XPATH, '//div[@data-name="reset"]')
+        REMOVE_BUTTON = (By.XPATH, '//div[@data-name="remove"]')
 
         @staticmethod
         def button_below_by_field_name(field_name: str):
@@ -105,3 +107,9 @@ class ContactForm(BasePage):
         genders = self.wait_for_all_elements(*self.Locators.GENDERS_ARRAY)
         genders[0].click()
         # self.driver.execute_script("arguments[0].click();", genders[0])
+
+    def click_reset_button(self):
+        self.wait_for_clickable(*self.Locators.RESET_BUTTON).click()
+
+    def click_remove_button(self):
+        self.wait_for_clickable(*self.Locators.REMOVE_BUTTON).click()
