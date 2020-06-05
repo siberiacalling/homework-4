@@ -95,6 +95,12 @@ class EditContactTest(BaseTest):
         new_phone = self.steps.add_another_phone_button_below()
         assert self.steps.phone_was_added_successfully(new_phone)
 
+    def test_add_another_email_button_below(self):
+        self.steps = AddressBookSteps(self.driver)
+        self.steps.edit_first_contact_in_list()
+        new_email = self.steps.add_another_email_button_below()
+        assert self.steps.email_was_added_successfully(new_email)
+
     def test_add_job_title_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,

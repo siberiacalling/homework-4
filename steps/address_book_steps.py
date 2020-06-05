@@ -21,6 +21,10 @@ class AddressBookSteps(BaseSteps):
     JOB_TITLE_INPUT_NAME = "job_title"
     PHONE_INPUT_NAME = "phones"
 
+    TEST_JOB_TITLE = "test_job_title"
+    TEST_BOSS = "test_boss"
+    TEST_NICK = "test_nick"
+
     def __init__(self, driver):
         super().__init__(AddressBookPage(driver))
 
@@ -105,6 +109,19 @@ class AddressBookSteps(BaseSteps):
         elif another_field == "email" and button_below:
             new_email = self.add_another_email_button_below()
             error = self.email_was_added_successfully(new_email)
+
+        elif another_field == "nick" and button_below:
+            self.add_nick_button_below(self.TEST_NICK, False)
+            error = self.nick_was_added_successfully(self.TEST_NICK)
+        elif another_field == "job_title" and button_below:
+            self.add_job_title_button_below(self.TEST_JOB_TITLE, False)
+            error = self.job_title_was_added_successfully(self.TEST_JOB_TITLE)
+        elif another_field == "boss" and button_below:
+            self.add_boss_button_below(self.TEST_BOSS, False)
+            error = self.boss_was_added_successfully(self.TEST_BOSS)
+        elif another_field == "gender" and button_below:
+            self.add_gender_button_below(False)
+            error = self.gender_was_added_successfully()
         return error
 
     def create_test_contact(self, firstname, lastname, company, email, phone, another_field=None, button_below=False):
@@ -179,23 +196,40 @@ class AddressBookSteps(BaseSteps):
         edit_form.click_submit_button()
         return new_email
 
-    def add_job_title_button_below(self, job_title):
-        edit_form = self.page.open_edit_form()
+    def add_job_title_button_below(self, job_title, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_JOB_TITLE)
         edit_form.add_another_field_by_input_name(self.JOB_TITLE_INPUT_NAME, job_title)
         edit_form.click_submit_button()
 
-    def add_boss_button_below(self, boss):
-        edit_form = self.page.open_edit_form()
+    def add_boss_button_below(self, boss, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_BOSS)
         edit_form.add_another_field_by_input_name(self.BOSS_INPUT_NAME, boss)
         edit_form.click_submit_button()
 
-    def add_nick_button_below(self, nick):
-        edit_form = self.page.open_edit_form()
-        edit_form = self.page.edit_form()
+    def add_nick_button_below(self, nick, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_NICK)
         edit_form.add_another_field_by_input_name(self.NICK_INPUT_NAME, nick)
+        edit_form.click_submit_button()
+    
+    def add_gender_button_below(self, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_GENDER)
+        edit_form.click_male_gender()
         edit_form.click_submit_button()
 
     def boss_was_added_successfully(self, boss):
@@ -217,12 +251,6 @@ class AddressBookSteps(BaseSteps):
     def job_title_was_added_successfully(self, job_title):
         contact_card = self.page.contact_card()
         return contact_card.job_title_was_added_successfully(job_title)
-
-    def add_gender_button_below(self):
-        edit_form = self.page.open_edit_form()
-        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_GENDER)
-        edit_form.click_male_gender()
-        edit_form.click_submit_button()
 
     def delete_job_title(self):
         form = self.page.open_edit_form()

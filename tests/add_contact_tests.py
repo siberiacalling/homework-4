@@ -21,7 +21,7 @@ class AddContactTests(BaseTest):
 
     def before_each(self):
         AuthSteps(self.driver).auth()
-
+        
     def test_successful_add_contact_with_firstname_only(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, None, None, None, None)
@@ -93,5 +93,37 @@ class AddContactTests(BaseTest):
         error = self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                                self.TEST_EMAIL,
                                                self.TEST_PHONE, "email", True)
+        assert error
+        self.steps.delete_tested_contact_from_contact_card()
+
+    def test_successful_add_contact_nick_button_below(self):
+        self.steps = AddressBookSteps(self.driver)
+        error = self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
+                                               self.TEST_EMAIL,
+                                               self.TEST_PHONE, "nick", True)
+        assert error
+        self.steps.delete_tested_contact_from_contact_card()
+
+    def test_successful_add_contact_job_title_button_below(self):
+        self.steps = AddressBookSteps(self.driver)
+        error = self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
+                                               self.TEST_EMAIL,
+                                               self.TEST_PHONE, "job_title", True)
+        assert error
+        self.steps.delete_tested_contact_from_contact_card()
+
+    def test_successful_add_contact_boss_button_below(self):
+        self.steps = AddressBookSteps(self.driver)
+        error = self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
+                                               self.TEST_EMAIL,
+                                               self.TEST_PHONE, "boss", True)
+        assert error
+        self.steps.delete_tested_contact_from_contact_card()
+
+    def test_successful_add_contact_gender_button_below(self):
+        self.steps = AddressBookSteps(self.driver)
+        error = self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
+                                               self.TEST_EMAIL,
+                                               self.TEST_PHONE, "gender", True)
         assert error
         self.steps.delete_tested_contact_from_contact_card()
