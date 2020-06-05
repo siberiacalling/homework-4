@@ -2,6 +2,7 @@ from random import randint
 
 from framework.steps import BaseSteps
 from pages.address_book_page.page import AddressBookPage
+from .data_generator import DataGenerator
 
 
 class AddressBookSteps(BaseSteps):
@@ -9,19 +10,6 @@ class AddressBookSteps(BaseSteps):
 
     def __init__(self, driver):
         super().__init__(AddressBookPage(driver))
-
-    class TestDataGenerator:
-        @staticmethod
-        def random_with_n_digits(n):
-            range_start = 10 ** (n - 1)
-            range_end = (10 ** n) - 1
-            return randint(range_start, range_end)
-
-        def create_new_phone(self):
-            return "+" + str(self.random_with_n_digits(5))
-
-        def create_new_email(self):
-            return "test" + str(self.random_with_n_digits(1)) + "@mail.com"
 
     def create_group_by_link(self, group_name: str):
         popup = self.page.open_create_group_popup()
@@ -52,12 +40,11 @@ class AddressBookSteps(BaseSteps):
         self.page.click_send_button()
 
     def add_another_email(self):
-        generator = self.TestDataGenerator()
+        generator = DataGenerator()
         new_email = generator.create_new_email()
 
         edit_form = self.page.edit_form()
         edit_form.click_add_email_button()
-
         edit_form.add_another_field_by_input_name("emails", new_email)
         edit_form.click_submit_button()
 
@@ -78,10 +65,37 @@ class AddressBookSteps(BaseSteps):
         edit_form.fill_contact(firstname, lastname, company, email, phone)
         edit_form.click_submit_button()
 
-    def create_test_contact(self, firstname, lastname, company, email, phone):
+    def process_create_contact_fields(self, another_field, button_below):
+        form = self.page.edit_form()
+        if another_field == "email":
+            generator = DataGenerator()
+            new_email = generator.create_new_email()
+
+            form.click_add_email_button()
+            form.add_another_field_by_input_name("emails", new_email)
+            form.click_submit_button()
+            contact_card = self.page.contact_card()
+            error = contact_card.email_was_added_successfully(new_email)
+        elif another_field == "phone":
+            generator = DataGenerator()
+            new_phone = generator.create_new_email()
+
+            form.click_add_phone_button()
+            form.add_another_field_by_input_name("phones", new_phone)
+            form.click_submit_button()
+            contact_card = self.page.contact_card()
+            error = contact_card.phone_was_added_successfully(new_phone)
+        return error
+
+    def create_test_contact(self, firstname, lastname, company, email, phone, another_field=None, button_below=False):
+        error = False
         form = self.page.open_add_contact_form()
         form.fill_contact(firstname, lastname, company, email, phone)
-        form.click_submit_button()
+        if not another_field and not button_below:
+            form.click_submit_button()
+        else:
+            error = self.process_create_contact_fields(another_field, button_below)
+        return error
 
     def change_firstname_field(self, new_firstname):
         edit_form = self.page.edit_form()
@@ -114,7 +128,7 @@ class AddressBookSteps(BaseSteps):
         self.page.click_edit_button()
 
     def add_another_phone(self):
-        generator = self.TestDataGenerator()
+        generator = DataGenerator()
         new_phone = generator.create_new_phone()
 
         edit_form = self.page.edit_form()
@@ -126,7 +140,7 @@ class AddressBookSteps(BaseSteps):
         return contact_card.phone_was_added_successfully(new_phone)
 
     def add_another_phone_button_below(self):
-        generator = self.TestDataGenerator()
+        generator = DataGenerator()
         new_phone = generator.create_new_phone()
 
         edit_form = self.page.edit_form()
@@ -213,4 +227,3 @@ class AddressBookSteps(BaseSteps):
     def select_two_contacts_from_list(self):
         self.page.check_first_checkbox()
         self.page.check_second_checkbox()
-
