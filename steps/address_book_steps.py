@@ -14,16 +14,19 @@ class AddressBookSteps(BaseSteps):
     BUTTON_BELOW_TEXT_NICK = 'Псевдоним'
     BUTTON_BELOW_TEXT_EMAIL = 'E-mail'
     BUTTON_BELOW_TEXT_BOSS = 'Руководитель'
+    BUTTON_BELOW_TEXT_ADDRESS = 'Адрес'
 
     EMAIL_INPUT_NAME = "emails"
     BOSS_INPUT_NAME = "boss"
     NICK_INPUT_NAME = "nick"
     JOB_TITLE_INPUT_NAME = "job_title"
     PHONE_INPUT_NAME = "phones"
+    ADDRESS_INPUT_NAME = "address"
 
     TEST_JOB_TITLE = "test_job_title"
     TEST_BOSS = "test_boss"
     TEST_NICK = "test_nick"
+    TEST_ADDRESS = "Moscow"
 
     def __init__(self, driver):
         super().__init__(AddressBookPage(driver))
@@ -84,7 +87,7 @@ class AddressBookSteps(BaseSteps):
 
     def process_create_contact_fields(self, another_field, button_below):
         form = self.page.edit_form()
-        error = False
+        success = False
         if another_field == "email" and not button_below:
             generator = DataGenerator()
             new_email = generator.create_new_email()
@@ -93,7 +96,7 @@ class AddressBookSteps(BaseSteps):
             form.add_another_field_by_input_name(self.EMAIL_INPUT_NAME, new_email)
             form.click_submit_button()
             contact_card = self.page.contact_card()
-            error = contact_card.email_was_added_successfully(new_email)
+            success = contact_card.email_was_added_successfully(new_email)
         elif another_field == "phone" and not button_below:
             generator = DataGenerator()
             new_phone = generator.create_new_email()
@@ -102,37 +105,73 @@ class AddressBookSteps(BaseSteps):
             form.add_another_field_by_input_name(self.PHONE_INPUT_NAME, new_phone)
             form.click_submit_button()
             contact_card = self.page.contact_card()
-            error = contact_card.phone_was_added_successfully(new_phone)
+            success = contact_card.phone_was_added_successfully(new_phone)
         elif another_field == "phone" and button_below:
             new_phone = self.add_another_phone_button_below()
-            error = self.phone_was_added_successfully(new_phone)
+            success = self.phone_was_added_successfully(new_phone)
         elif another_field == "email" and button_below:
             new_email = self.add_another_email_button_below()
-            error = self.email_was_added_successfully(new_email)
-
+            success = self.email_was_added_successfully(new_email)
         elif another_field == "nick" and button_below:
             self.add_nick_button_below(self.TEST_NICK, False)
-            error = self.nick_was_added_successfully(self.TEST_NICK)
+            success = self.nick_was_added_successfully(self.TEST_NICK)
         elif another_field == "job_title" and button_below:
             self.add_job_title_button_below(self.TEST_JOB_TITLE, False)
-            error = self.job_title_was_added_successfully(self.TEST_JOB_TITLE)
+            success = self.job_title_was_added_successfully(self.TEST_JOB_TITLE)
         elif another_field == "boss" and button_below:
             self.add_boss_button_below(self.TEST_BOSS, False)
-            error = self.boss_was_added_successfully(self.TEST_BOSS)
+            success = self.boss_was_added_successfully(self.TEST_BOSS)
         elif another_field == "gender" and button_below:
             self.add_gender_button_below(False)
-            error = self.gender_was_added_successfully()
-        return error
+            success = self.gender_was_added_successfully()
+        elif another_field == "address" and button_below:
+            self.add_address_button_below(self.TEST_ADDRESS, False)
+            success = self.address_was_added_successfully(self.TEST_ADDRESS)
+        elif another_field == "address" and button_below:
+            self.add_address_button_below(self.TEST_ADDRESS, False)
+            success = self.address_was_added_successfully(self.TEST_ADDRESS)
+        return success
+
+    def add_field(self, field):
+        if field == "job_title":
+            self.add_job_title_button_below(self.TEST_JOB_TITLE, False, False)
+        elif field == "boss":
+            self.add_boss_button_below(self.TEST_BOSS, False, False)
+        elif field == "nick":
+            self.add_nick_button_below(self.TEST_NICK, False, False)
+
+    def delete_field(self, field):
+        if field == "job_title":
+            self.delete_job_title(False)
+            return self.job_title_not_on_page()
 
     def create_test_contact(self, firstname, lastname, company, email, phone, another_field=None, button_below=False):
-        error = False
+        success = False
         form = self.page.open_add_contact_form()
         form.fill_contact(firstname, lastname, company, email, phone)
         if not another_field and not button_below:
             form.click_submit_button()
         else:
-            error = self.process_create_contact_fields(another_field, button_below)
-        return error
+            success = self.process_create_contact_fields(another_field, button_below)
+        return success
+
+    def create_test_contact_with_field_delete(self, firstname, lastname, company, email, phone, another_field):
+        form = self.page.open_add_contact_form()
+        form.fill_contact(firstname, lastname, company, email, phone)
+        self.add_field(another_field)
+
+        if another_field == "job_title":
+            form.click_delete_button_job_title()
+            form.click_submit_button()
+            return self.job_title_not_on_page()
+        elif another_field == "boss":
+            self.delete_boss(False)
+            return self.boss_not_on_page()
+        elif another_field == "nick":
+            self.delete_nick(False)
+            return self.nick_not_on_page()
+        form.click_submit_button()
+
 
     def change_firstname_field(self, new_firstname):
         edit_form = self.page.edit_form()
@@ -176,14 +215,15 @@ class AddressBookSteps(BaseSteps):
         contact_card = self.page.contact_card()
         return contact_card.phone_was_added_successfully(new_phone)
 
-    def add_another_phone_button_below(self):
+    def add_another_phone_button_below(self, submit=True):
         generator = DataGenerator()
         new_phone = generator.create_new_phone()
 
         edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_PHONE)
         edit_form.add_another_field_by_input_name(self.PHONE_INPUT_NAME, new_phone)
-        edit_form.click_submit_button()
+        if submit:
+            edit_form.click_submit_button()
         return new_phone
 
     def add_another_email_button_below(self):
@@ -196,33 +236,36 @@ class AddressBookSteps(BaseSteps):
         edit_form.click_submit_button()
         return new_email
 
-    def add_job_title_button_below(self, job_title, open_form=True):
+    def add_job_title_button_below(self, job_title, open_form=True, save=True):
         if open_form:
             edit_form = self.page.open_edit_form()
         else:
             edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_JOB_TITLE)
         edit_form.add_another_field_by_input_name(self.JOB_TITLE_INPUT_NAME, job_title)
-        edit_form.click_submit_button()
+        if save:
+            edit_form.click_submit_button()
 
-    def add_boss_button_below(self, boss, open_form=True):
+    def add_boss_button_below(self, boss, open_form=True, save=True):
         if open_form:
             edit_form = self.page.open_edit_form()
         else:
             edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_BOSS)
         edit_form.add_another_field_by_input_name(self.BOSS_INPUT_NAME, boss)
-        edit_form.click_submit_button()
+        if save:
+            edit_form.click_submit_button()
 
-    def add_nick_button_below(self, nick, open_form=True):
+    def add_nick_button_below(self, nick, open_form=True, save=True):
         if open_form:
             edit_form = self.page.open_edit_form()
         else:
             edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_NICK)
         edit_form.add_another_field_by_input_name(self.NICK_INPUT_NAME, nick)
-        edit_form.click_submit_button()
-    
+        if save:
+            edit_form.click_submit_button()
+
     def add_gender_button_below(self, open_form=True):
         if open_form:
             edit_form = self.page.open_edit_form()
@@ -230,6 +273,15 @@ class AddressBookSteps(BaseSteps):
             edit_form = self.page.edit_form()
         edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_GENDER)
         edit_form.click_male_gender()
+        edit_form.click_submit_button()
+
+    def add_address_button_below(self, address, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_ADDRESS)
+        edit_form.add_another_field_by_input_name(self.ADDRESS_INPUT_NAME, address)
         edit_form.click_submit_button()
 
     def boss_was_added_successfully(self, boss):
@@ -244,6 +296,10 @@ class AddressBookSteps(BaseSteps):
         contact_card = self.page.contact_card()
         return contact_card.gender_was_added_successfully()
 
+    def address_was_added_successfully(self, address):
+        contact_card = self.page.contact_card()
+        return contact_card.address_was_added_successfully(address)
+
     def phone_was_added_successfully(self, new_phone):
         contact_card = self.page.contact_card()
         return contact_card.phone_was_added_successfully(new_phone)
@@ -252,32 +308,42 @@ class AddressBookSteps(BaseSteps):
         contact_card = self.page.contact_card()
         return contact_card.job_title_was_added_successfully(job_title)
 
-    def delete_job_title(self):
-        form = self.page.open_edit_form()
-        form.click_delete_button_job_title()
-        form.click_submit_button()
+    def delete_job_title(self, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
 
-    def delete_boss(self):
-        edit_form = self.page.open_edit_form()
+        edit_form.click_delete_button_job_title()
+        edit_form.click_submit_button()
+
+    def delete_boss(self, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
         edit_form.click_delete_button_boss()
         edit_form.click_submit_button()
 
-    def delete_nick(self):
-        edit_form = self.page.open_edit_form()
+    def delete_nick(self, open_form=True):
+        if open_form:
+            edit_form = self.page.open_edit_form()
+        else:
+            edit_form = self.page.edit_form()
         edit_form.click_delete_button_nick()
         edit_form.click_submit_button()
 
-    def nick_was_deleted(self):
+    def nick_not_on_page(self):
         contact_card = self.page.contact_card()
-        return contact_card.nick_was_deleted()
+        return contact_card.nick_not_on_page()
 
-    def boss_was_deleted(self):
+    def boss_not_on_page(self):
         contact_card = self.page.contact_card()
-        return contact_card.boss_was_deleted()
+        return contact_card.boss_not_on_page()
 
-    def job_title_was_deleted(self):
+    def job_title_not_on_page(self):
         contact_card = self.page.contact_card()
-        return contact_card.job_title_was_deleted()
+        return contact_card.job_title_not_on_page()
 
     def select_one_contact_from_list(self):
         self.page.check_first_checkbox()

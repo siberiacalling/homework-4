@@ -16,7 +16,8 @@ class ContactCard(BasePage):
         JOB_TITLE_ARRAY = (By.XPATH, '//span[@class="contact__job__item contact__job__item_job_title"]')
         BOSS_ARRAY = (By.XPATH, '//div[@class="contact__job__item contact__job__item_boss"]')
         NICK_ARRAY = (By.XPATH, '//span[@class="contact__header__title__additional"]')
-        GENDER_HEADER = (By.XPATH, '//div[@class="contact__header__additional"]')
+        CONTACT_GENDER = (By.XPATH, '//div[@class="contact__header__additional"]')
+        CONTACT_ADDRESS = (By.XPATH, '//div[@class="contact__address__item"]')
 
         @staticmethod
         def current_contact_container_in_card(lastname: str, new_firstname: str):
@@ -62,22 +63,29 @@ class ContactCard(BasePage):
         return value_in_contact_card[-1].text == check_value
 
     def gender_was_added_successfully(self):
-        contact_header = self.wait_for_visible(*self.Locators.GENDER_HEADER)
+        contact_header = self.wait_for_visible(*self.Locators.CONTACT_GENDER)
         return contact_header.text == 'Мужской'
 
-    def job_title_was_deleted(self):
+    def address_was_added_successfully(self, address):
+        try:
+            address_field = self.wait_for_visible(*self.Locators.CONTACT_ADDRESS)
+            return address_field.text == address
+        except TimeoutException:
+            return False
+
+    def job_title_not_on_page(self):
         job_title_element = self.driver.find_elements(*self.Locators.JOB_TITLE_ARRAY)
         if not job_title_element:
             return True
         return False
 
-    def nick_was_deleted(self):
+    def nick_not_on_page(self):
         nick_element = self.driver.find_elements(*self.Locators.NICK_ARRAY)
         if not nick_element:
             return True
         return False
 
-    def boss_was_deleted(self):
+    def boss_not_on_page(self):
         boss_element = self.driver.find_elements(*self.Locators.BOSS_ARRAY)
         if not boss_element:
             return True

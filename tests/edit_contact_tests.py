@@ -139,7 +139,7 @@ class EditContactTest(BaseTest):
                                        self.TEST_PHONE)
         self.steps.add_job_title_button_below(self.TEST_JOB_TITLE)
         self.steps.delete_job_title()
-        assert self.steps.job_title_was_deleted()
+        assert self.steps.job_title_not_on_page()
         self.steps.delete_tested_contact_from_contact_card()
 
     def test_delete_boss(self):
@@ -148,7 +148,7 @@ class EditContactTest(BaseTest):
                                        self.TEST_PHONE)
         self.steps.add_boss_button_below(self.TEST_BOSS)
         self.steps.delete_boss()
-        assert self.steps.boss_was_deleted()
+        assert self.steps.boss_not_on_page()
         self.steps.delete_tested_contact_from_contact_card()
 
     def test_delete_nick(self):
@@ -157,5 +157,5 @@ class EditContactTest(BaseTest):
                                        self.TEST_PHONE)
         self.steps.add_nick_button_below(self.TEST_NICK)
         self.steps.delete_nick()
-        assert self.steps.nick_was_deleted()
+        assert self.steps.nick_not_on_page()
         self.steps.delete_tested_contact_from_contact_card()

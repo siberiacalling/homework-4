@@ -36,7 +36,7 @@ class ContactForm(BasePage):
         parent_element = add_field_buttons[0].find_element_by_xpath('..')
         parent_element.click()
         all_buttons = self.wait_for_all_elements(*self.Locators.button_below_by_field_name(field_name))
-        #all_buttons[1].click()
+        # all_buttons[1].click()
         self.driver.execute_script("arguments[0].click();", all_buttons[1])
 
     def add_another_field_by_input_name(self, name, new_field):
@@ -104,5 +104,4 @@ class ContactForm(BasePage):
     def click_male_gender(self):
         genders = self.wait_for_all_elements(*self.Locators.GENDERS_ARRAY)
         genders[0].click()
-        #self.driver.execute_script("arguments[0].click();", genders[0])
-
+        # self.driver.execute_script("arguments[0].click();", genders[0])
