@@ -88,14 +88,10 @@ class AddContactTests(BaseTest):
         assert error
         self.steps.delete_tested_contact_from_contact_card()
 
-"""
-
-    
-    def test_successful_add_contact_another_phone_button_below(self):
+    def test_successful_add_contact_another_email_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         error = self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                                self.TEST_EMAIL,
-                                               self.TEST_PHONE, "phone", True)
+                                               self.TEST_PHONE, "email", True)
         assert error
         self.steps.delete_tested_contact_from_contact_card()
-"""

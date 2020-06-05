@@ -8,6 +8,19 @@ from .data_generator import DataGenerator
 class AddressBookSteps(BaseSteps):
     page: AddressBookPage
 
+    BUTTON_BELOW_TEXT_JOB_TITLE = 'Должность'
+    BUTTON_BELOW_TEXT_PHONE = 'Телефон'
+    BUTTON_BELOW_TEXT_GENDER = 'Пол'
+    BUTTON_BELOW_TEXT_NICK = 'Псевдоним'
+    BUTTON_BELOW_TEXT_EMAIL = 'E-mail'
+    BUTTON_BELOW_TEXT_BOSS = 'Руководитель'
+
+    EMAIL_INPUT_NAME = "emails"
+    BOSS_INPUT_NAME = "boss"
+    NICK_INPUT_NAME = "nick"
+    JOB_TITLE_INPUT_NAME = "job_title"
+    PHONE_INPUT_NAME = "phones"
+
     def __init__(self, driver):
         super().__init__(AddressBookPage(driver))
 
@@ -45,7 +58,7 @@ class AddressBookSteps(BaseSteps):
 
         edit_form = self.page.edit_form()
         edit_form.click_add_email_button()
-        edit_form.add_another_field_by_input_name("emails", new_email)
+        edit_form.add_another_field_by_input_name(self.EMAIL_INPUT_NAME, new_email)
         edit_form.click_submit_button()
 
         contact_card = self.page.contact_card()
@@ -67,24 +80,31 @@ class AddressBookSteps(BaseSteps):
 
     def process_create_contact_fields(self, another_field, button_below):
         form = self.page.edit_form()
-        if another_field == "email":
+        error = False
+        if another_field == "email" and not button_below:
             generator = DataGenerator()
             new_email = generator.create_new_email()
 
             form.click_add_email_button()
-            form.add_another_field_by_input_name("emails", new_email)
+            form.add_another_field_by_input_name(self.EMAIL_INPUT_NAME, new_email)
             form.click_submit_button()
             contact_card = self.page.contact_card()
             error = contact_card.email_was_added_successfully(new_email)
-        elif another_field == "phone":
+        elif another_field == "phone" and not button_below:
             generator = DataGenerator()
             new_phone = generator.create_new_email()
 
             form.click_add_phone_button()
-            form.add_another_field_by_input_name("phones", new_phone)
+            form.add_another_field_by_input_name(self.PHONE_INPUT_NAME, new_phone)
             form.click_submit_button()
             contact_card = self.page.contact_card()
             error = contact_card.phone_was_added_successfully(new_phone)
+        elif another_field == "phone" and button_below:
+            new_phone = self.add_another_phone_button_below()
+            error = self.phone_was_added_successfully(new_phone)
+        elif another_field == "email" and button_below:
+            new_email = self.add_another_email_button_below()
+            error = self.email_was_added_successfully(new_email)
         return error
 
     def create_test_contact(self, firstname, lastname, company, email, phone, another_field=None, button_below=False):
@@ -133,7 +153,7 @@ class AddressBookSteps(BaseSteps):
 
         edit_form = self.page.edit_form()
         edit_form.click_add_phone_button()
-        edit_form.add_another_field_by_input_name("phones", new_phone)
+        edit_form.add_another_field_by_input_name(self.PHONE_INPUT_NAME, new_phone)
         edit_form.click_submit_button()
 
         contact_card = self.page.contact_card()
@@ -144,28 +164,38 @@ class AddressBookSteps(BaseSteps):
         new_phone = generator.create_new_phone()
 
         edit_form = self.page.edit_form()
-        edit_form.choose_field_button_below('Телефон')
-        edit_form.add_another_field_by_input_name("phones", new_phone)
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_PHONE)
+        edit_form.add_another_field_by_input_name(self.PHONE_INPUT_NAME, new_phone)
         edit_form.click_submit_button()
         return new_phone
 
+    def add_another_email_button_below(self):
+        generator = DataGenerator()
+        new_email = generator.create_new_email()
+
+        edit_form = self.page.edit_form()
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_EMAIL)
+        edit_form.add_another_field_by_input_name(self.EMAIL_INPUT_NAME, new_email)
+        edit_form.click_submit_button()
+        return new_email
+
     def add_job_title_button_below(self, job_title):
         edit_form = self.page.open_edit_form()
-        edit_form.choose_field_button_below('Должность')
-        edit_form.add_another_field_by_input_name("job_title", job_title)
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_JOB_TITLE)
+        edit_form.add_another_field_by_input_name(self.JOB_TITLE_INPUT_NAME, job_title)
         edit_form.click_submit_button()
 
     def add_boss_button_below(self, boss):
         edit_form = self.page.open_edit_form()
-        edit_form.choose_field_button_below('Руководитель')
-        edit_form.add_another_field_by_input_name("boss", boss)
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_BOSS)
+        edit_form.add_another_field_by_input_name(self.BOSS_INPUT_NAME, boss)
         edit_form.click_submit_button()
 
     def add_nick_button_below(self, nick):
         edit_form = self.page.open_edit_form()
         edit_form = self.page.edit_form()
-        edit_form.choose_field_button_below('Псевдоним')
-        edit_form.add_another_field_by_input_name("nick", nick)
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_NICK)
+        edit_form.add_another_field_by_input_name(self.NICK_INPUT_NAME, nick)
         edit_form.click_submit_button()
 
     def boss_was_added_successfully(self, boss):
@@ -190,7 +220,7 @@ class AddressBookSteps(BaseSteps):
 
     def add_gender_button_below(self):
         edit_form = self.page.open_edit_form()
-        edit_form.choose_field_button_below('Пол')
+        edit_form.choose_field_button_below(self.BUTTON_BELOW_TEXT_GENDER)
         edit_form.click_male_gender()
         edit_form.click_submit_button()
 
