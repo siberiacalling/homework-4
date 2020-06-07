@@ -181,6 +181,9 @@ class AddressBookSteps(BaseSteps):
         self.page.click_contact_in_list(firstname, lastname)
         self.page.click_edit_button()
 
+    def click_checkbox_with_test_contact_in_list(self, firstname, lastname):
+        self.page.click_checkbox_with_contact_in_list(firstname, lastname)
+
     def click_test_contact_in_list(self, firstname, lastname):
         self.page.click_contact_in_list(firstname, lastname)
 
@@ -191,11 +194,16 @@ class AddressBookSteps(BaseSteps):
         contact_card = self.page.contact_card()
         return contact_card.check_contact_title_by_firstname_and_lastname(new_firstname, lastname)
 
-    def delete_tested_contact_from_contact_card(self):
+    def delete_tested_contact_and_cancel(self):
+        contact_card = self.page.contact_card()
+        contact_card.click_remove_button()
+        contact_card.cancel_remove()
+
+    def delete_tested_contact_and_confirm(self):
         contact_card = self.page.contact_card()
         contact_card.click_remove_button()
         contact_card.confirm_remove()
-
+        
     def go_to_adressbook_start_page(self):
         self.page.click_adressbook_href()
 

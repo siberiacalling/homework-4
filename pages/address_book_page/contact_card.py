@@ -8,6 +8,7 @@ class ContactCard(BasePage):
     class Locators:
         REMOVE_BUTTON = (By.XPATH, '//div[@data-name="remove"]')
         CONFIRM_BUTTONS_ARRAY = (By.XPATH, '//*[contains(@class, \'btn btn_main confirm-ok\')]')
+        CANCEL_BUTTON = (By.XPATH, '//*[contains(@class, \'btn confirm-cancel\')]')
 
         FIRST_PHONE_EDIT_FORM = (By.ID, 'phones_0')
 
@@ -41,6 +42,10 @@ class ContactCard(BasePage):
         buttons_in_list = self.wait_for_all_elements(*self.Locators.CONFIRM_BUTTONS_ARRAY)
         buttons_in_list[0].click()
 
+    def cancel_remove(self):
+        buttons_in_list = self.wait_for_clickable(*self.Locators.CANCEL_BUTTON)
+        buttons_in_list.click()
+        
     def phone_was_added_successfully(self, new_phone):
         contact_phones = self.wait_for_all_elements(*self.Locators.PHONES_ARRAY)
         return contact_phones[-1].text == new_phone

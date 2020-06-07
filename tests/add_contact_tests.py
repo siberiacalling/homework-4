@@ -34,33 +34,33 @@ class AddContactTests(BaseTest):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, None, None, None, None)
         assert self.steps.check_edited_contact_title(self.TEST_FIRSTNAME, None)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_with_lastname_only(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(None, self.TEST_LASTNAME, None, None, None)
         assert self.steps.check_edited_contact_title(None, self.TEST_LASTNAME)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_with_company_only(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(None, None, self.TEST_COMPANY, None, None)
         assert self.steps.check_edited_contact_title(self.EMPTY_CONTACT_TITLE, None)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_with_email_only(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(None, None, None, self.TEST_EMAIL, None)
         assert self.steps.email_was_added_successfully(self.TEST_EMAIL) and self.steps.check_edited_contact_title(
             self.EMPTY_CONTACT_TITLE, None)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact(self):
         self.steps = AddressBookSteps(self.driver)
         self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY, self.TEST_EMAIL,
                                        self.TEST_PHONE)
         assert self.steps.check_edited_contact_title(self.TEST_FIRSTNAME, self.TEST_LASTNAME)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_try_to_add_empty_contact(self):
         self.steps = AddressBookSteps(self.driver)
@@ -86,63 +86,63 @@ class AddContactTests(BaseTest):
                                                  self.TEST_EMAIL,
                                                  self.TEST_PHONE, "email")
         assert success
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_another_phone(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "phone")
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_phone_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "phone", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_another_email_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "email", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_nick_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "nick", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_job_title_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "job_title", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_boss_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "boss", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_gender_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "gender", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_add_contact_address_button_below(self):
         self.steps = AddressBookSteps(self.driver)
         assert self.steps.create_test_contact(self.TEST_FIRSTNAME, self.TEST_LASTNAME, self.TEST_COMPANY,
                                               self.TEST_EMAIL,
                                               self.TEST_PHONE, "address", True)
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_delete_job_title_during_creation(self):
         self.steps = AddressBookSteps(self.driver)
@@ -150,7 +150,7 @@ class AddContactTests(BaseTest):
                                                                 self.TEST_COMPANY,
                                                                 self.TEST_EMAIL,
                                                                 self.TEST_PHONE, "job_title")
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_delete_boss_during_creation(self):
         self.steps = AddressBookSteps(self.driver)
@@ -158,7 +158,7 @@ class AddContactTests(BaseTest):
                                                                 self.TEST_COMPANY,
                                                                 self.TEST_EMAIL,
                                                                 self.TEST_PHONE, "boss")
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()
 
     def test_successful_delete_nick_during_creation(self):
         self.steps = AddressBookSteps(self.driver)
@@ -166,4 +166,4 @@ class AddContactTests(BaseTest):
                                                                 self.TEST_COMPANY,
                                                                 self.TEST_EMAIL,
                                                                 self.TEST_PHONE, "nick")
-        self.steps.delete_tested_contact_from_contact_card()
+        self.steps.delete_tested_contact_and_confirm()

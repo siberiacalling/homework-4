@@ -94,6 +94,15 @@ class AddressBookPage(BasePage):
     def click_adressbook_href(self):
         self.wait_for_clickable(*self.Locators.ADDRESSBOOK_HREF).click()
 
+    def click_checkbox_with_contact_in_list(self, firstname, lastname):
+        child_element = self.wait_for_visible(*self.Locators.current_contact_container_in_list(firstname, lastname))
+        parent_element = child_element.find_element_by_xpath('..')
+        contact_href = parent_element.find_element_by_xpath('..')
+        contact_href_div = contact_href.find_element_by_xpath('..')
+        main_div = contact_href_div.find_element_by_xpath('..')
+        check_box = main_div.find_element_by_name("id")
+        check_box.click()
+
     def click_contact_in_list(self, firstname, lastname):
         child_element = self.wait_for_visible(*self.Locators.current_contact_container_in_list(firstname, lastname))
         parent_element = child_element.find_element_by_xpath('..')
